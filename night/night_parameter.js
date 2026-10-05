@@ -1,12 +1,12 @@
 var milkway = {
  filename: "0milkway.png",   
  width: 1920,
- height: 1080,
+ height: 3414,
  horizontal_align: "center",
  start_alpha: 1,
  mid_alpha: 1,
  end_alpha: 1,
- start_shift_y_percent: -0.35,
+ start_shift_y_percent: -2,
  mid_shift_y_percent: 0,
  end_shift_y_percent: 0
 }
