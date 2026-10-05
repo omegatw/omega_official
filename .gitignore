@@ -1,0 +1,87 @@
+# ============================================================================
+# .gitignore — omega_official
+# ============================================================================
+
+# --- 本機編輯用資料夾 / Local editing folder ---
+plan/
+
+# --- 環境變數 / Environment variables ---
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+
+# --- macOS 系統檔案 ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDouble
+.LSOverride
+Icon?
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+
+# --- Windows 系統檔案 ---
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# --- Linux 系統檔案 ---
+*~
+.directory
+.Trash-*
+.nfs*
+
+# --- IDE / 編輯器 ---
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*.swn
+*.bak
+.history/
+
+# --- Node / 套件管理（若有用到 build tools） ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm
+.yarn/
+.pnp.*
+
+# --- 靜態網站建置 / 快取 ---
+dist/
+build/
+.cache/
+.parcel-cache/
+.sass-cache/
+.next/
+out/
+
+# --- 本機伺服器 / 其他 ---
+*.log
+tmp/
+temp/

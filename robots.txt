@@ -1,0 +1,216 @@
+# ============================================================================
+# Omega 公司專屬網站 / Omega Proprietary Website
+# ----------------------------------------------------------------------------
+# 本專案為 Omega 公司私有財產，目前仍在開發中，內容屬完全保密狀態。
+# 嚴禁任何未經授權之訪問、抓取、索引、快取、分析、AI 訓練或使用。
+# 所有網路爬蟲、搜尋引擎及 AI 裝置／代理請立即離開本私有專案。
+#
+# This project is the private property of Omega, currently under development,
+# and all contents are strictly confidential. Any unauthorized access,
+# scraping, indexing, caching, analysis, AI training, or use is prohibited.
+# All web crawlers, search engines, and AI bots/agents must leave immediately.
+# ============================================================================
+
+# --- 全面禁止 / Block all crawlers ---
+User-agent: *
+Disallow: /
+
+# --- OpenAI ---
+User-agent: GPTBot
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+# --- Anthropic ---
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-User
+Disallow: /
+
+User-agent: Claude-SearchBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# --- Google（含 AI 訓練專用 token / AI training product token） ---
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: GoogleOther
+Disallow: /
+
+User-agent: GoogleOther-Image
+Disallow: /
+
+User-agent: GoogleOther-Video
+Disallow: /
+
+# --- Meta ---
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: meta-webindexer
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+# --- Apple ---
+User-agent: Applebot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+# --- ByteDance ---
+User-agent: Bytespider
+Disallow: /
+
+User-agent: TikTokSpider
+Disallow: /
+
+# --- Amazon / Alexa ---
+User-agent: Amazonbot
+Disallow: /
+
+# --- Common Crawl（多數 AI 訓練資料來源 / source of many AI datasets） ---
+User-agent: CCBot
+Disallow: /
+
+# --- Perplexity ---
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Perplexity-User
+Disallow: /
+
+# --- Microsoft / Bing ---
+User-agent: Bingbot
+Disallow: /
+
+User-agent: bingpreview
+Disallow: /
+
+# --- Mistral AI ---
+User-agent: MistralAI-User
+Disallow: /
+
+# --- Cohere ---
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: cohere-training-data-crawler
+Disallow: /
+
+# --- Allen Institute for AI ---
+User-agent: AI2Bot
+Disallow: /
+
+User-agent: AI2Bot-Dolma
+Disallow: /
+
+# --- Huawei ---
+User-agent: PanguBot
+Disallow: /
+
+# --- You.com ---
+User-agent: YouBot
+Disallow: /
+
+# --- Diffbot ---
+User-agent: Diffbot
+Disallow: /
+
+# --- 其他已知 AI／資料爬蟲 / Other known AI & data scrapers ---
+User-agent: img2dataset
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: Omgili
+Disallow: /
+
+User-agent: Webzio-Extended
+Disallow: /
+
+User-agent: Kangaroo Bot
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+User-agent: LinerBot
+Disallow: /
+
+User-agent: SentiBot
+Disallow: /
+
+User-agent: iaskspider
+Disallow: /
+
+User-agent: Thinkbot
+Disallow: /
+
+User-agent: Sidetrade indexer bot
+Disallow: /
+
+User-agent: bigsur.ai
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+User-agent: velen.io
+Disallow: /
+
+User-agent: NovaAct
+Disallow: /
+
+# --- 其他搜尋引擎 / Other search engines ---
+User-agent: Yandex
+Disallow: /
+
+User-agent: YandexBot
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: DuckDuckBot
+Disallow: /
+
+User-agent: Slurp
+Disallow: /
+
+User-agent: Sogou
+Disallow: /
+
+User-agent: Exabot
+Disallow: /
+
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: archive.org_bot
+Disallow: /
+
+# ----------------------------------------------------------------------------
+# 注意：robots.txt 僅為禮貌性聲明，無法阻止惡意爬蟲。
+# 如需實際防護，請於伺服器端封鎖 User-Agent / IP，或設置存取驗證。
+# Note: robots.txt is advisory only and cannot stop malicious crawlers.
+# For real enforcement, block User-Agents / IPs at the server level
+# or require authentication.
+# ----------------------------------------------------------------------------
