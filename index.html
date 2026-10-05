@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Omega</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      background: #04112a;
+    }
+
+    .scroll-scene {
+      height: 300vh;
+      height: 300svh;
+    }
+
+    .scene {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      height: 100svh;
+      overflow: hidden;
+      background: #04112a;
+    }
+
+    .backdrop,
+    .layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .backdrop { z-index: 0; }
+    .layer { will-change: transform, opacity; }
+  </style>
+</head>
+<body>
+  <main class="scroll-scene" id="scroll-scene">
+    <div class="scene" id="scene" role="img" aria-label="Omega 山景主視覺動畫">
+      <img class="backdrop" src="night/0milkway.jpg" alt="" aria-hidden="true">
+    </div>
+  </main>
+
+  <script src="night/night_parameter.js"></script>
+  <script>
+    (() => {
+      const scene = document.getElementById("scene");
+      const scrollScene = document.getElementById("scroll-scene");
+
+      const parameters = [
+        milkway,
+        moving_red,
+        light_clouds,
+        blue,
+        sun,
+        black_mountain,
+        red_mountain,
+        omega
+      ];
+
+      const filenames = {
+        "0milkway.png": "0milkway.jpg",
+        "2light_clouds.png": "2lighting_cloud.png"
+      };
+
+      const layers = parameters.map((parameter, index) => {
+        const image = document.createElement("img");
+        image.className = "layer";
+        image.src = `night/${filenames[parameter.filename] ?? parameter.filename}`;
+        image.alt = "";
+        image.setAttribute("aria-hidden", "true");
+        image.draggable = false;
+        image.style.zIndex = index + 1;
+        scene.appendChild(image);
+        return image;
+      });
+
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const smoothstep = value => value * value * (3 - 2 * value);
+      const interpolate = (from, to, amount) => from + (to - from) * amount;
+
+      function keyframeValue(parameter, property, progress) {
+        const firstHalf = progress <= 0.5;
+        const from = parameter[`${firstHalf ? "start" : "mid"}_${property}`];
+        const to = parameter[`${firstHalf ? "mid" : "end"}_${property}`];
+        const amount = smoothstep(firstHalf ? progress * 2 : (progress - 0.5) * 2);
+        return interpolate(from, to, amount);
+      }
+
+      let scheduled = false;
+
+      function render() {
+        scheduled = false;
+
+        const distance = scrollScene.offsetHeight - scene.offsetHeight;
+        const progress = distance > 0
+          ? clamp(-scrollScene.getBoundingClientRect().top / distance, 0, 1)
+          : 0;
+
+        const viewportWidth = scene.clientWidth;
+        const viewportHeight = scene.clientHeight;
+
+        parameters.forEach((parameter, index) => {
+          const alpha = keyframeValue(parameter, "alpha", progress);
+          const shift = keyframeValue(parameter, "shift_y_percent", progress);
+
+          // object-fit: cover 後的實際圖片高度；位移百分比以此為基準。
+          const imageHeight = Math.max(
+            viewportHeight,
+            viewportWidth * parameter.height / parameter.width
+          );
+
+          layers[index].style.opacity = alpha;
+          layers[index].style.transform = `translate3d(0, ${shift * imageHeight}px, 0)`;
+        });
+      }
+
+      function scheduleRender() {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(render);
+      }
+
+      window.addEventListener("scroll", scheduleRender, { passive: true });
+      window.addEventListener("resize", scheduleRender);
+      render();
+    })();
+  </script>
+</body>
+</html>
