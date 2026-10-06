@@ -233,14 +233,39 @@
           endFallback.style.display = "block";
           scrollScene.style.height = "100vh";
           scrollIndicator.classList.add("hidden");
-          layers.forEach(img => img.style.display = "none");
+
+          // 隱藏 0~6 圖層，顯示第 7 個圖層 (omega) 並在 end.png 上方按 contain 模式水平與垂直居中擺放
+          layers.forEach((img, idx) => {
+            if (idx === 7) {
+              const scale = Math.min(
+                viewportWidth / omega.width,
+                viewportHeight / omega.height
+              );
+              const renderWidth = omega.width * scale;
+              const renderHeight = omega.height * scale;
+              const left = (viewportWidth - renderWidth) / 2;
+              const top = (viewportHeight - renderHeight) / 2;
+
+              img.style.width = `${renderWidth}px`;
+              img.style.height = `${renderHeight}px`;
+              img.style.opacity = "1";
+              img.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+              img.style.zIndex = "25";
+              img.style.display = "block";
+            } else {
+              img.style.display = "none";
+            }
+          });
           return;
         }
 
         // 恢復正常互動式滾輪動畫模式
         endFallback.style.display = "none";
         scrollScene.style.height = "320vh";
-        layers.forEach(img => img.style.display = "block");
+        layers.forEach((img, idx) => {
+          img.style.display = "block";
+          img.style.zIndex = idx + 1;
+        });
 
         const distance = scene.offsetHeight * 2;
         const progress = distance > 0
@@ -279,6 +304,16 @@
             translateY = firstHalf
               ? interpolate(mwTopStart, mwTopMid, amount)
               : mwTopMid;
+          } else if (parameter === omega) {
+            // omega 強制長寬比例固定不得縮放變形，填滿寬或填滿長，長寬均不被裁切 (contain 模式)，水平與垂直置中
+            const scale = Math.min(
+              viewportWidth / parameter.width,
+              viewportHeight / parameter.height
+            );
+            renderWidth = parameter.width * scale;
+            renderHeight = parameter.height * scale;
+            left = (viewportWidth - renderWidth) / 2;
+            translateY = (viewportHeight - renderHeight) / 2 + shift * viewportHeight;
           } else {
             // 計算自適應縮放，保持圖片原長寬比例並 Cover 填滿螢幕
             const scale = Math.max(

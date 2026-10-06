@@ -84,7 +84,7 @@ var red_mountain = {
 }
 var omega = {
  filename: "7omega.png",
- width: 1920,
+ width: 1200,
  height: 1080,
  horizontal_align: "center",
  start_alpha: 0,
