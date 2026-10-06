@@ -10,8 +10,20 @@ var milkway = {
  mid_shift_y_percent: 0,
  end_shift_y_percent: 0
 }
+var blue = {
+ filename: "1blue.png",
+ width: 1920,
+ height: 1080,
+ horizontal_align: "center",
+ start_alpha: 0.36,
+ mid_alpha: 1,
+ end_alpha: 1,
+ start_shift_y_percent: 0,
+ mid_shift_y_percent: 0,
+ end_shift_y_percent: 0
+}
 var moving_red = {
- filename: "1moving_red.png",
+ filename: "2moving_red.png",
  width: 1920,
  height: 1080,
  horizontal_align: "center",
@@ -23,23 +35,11 @@ var moving_red = {
  end_shift_y_percent: 0
 }
 var light_clouds = {
- filename: "2light_clouds.png",
+ filename: "3light_clouds.png",
  width: 1920,
  height: 1080,
  horizontal_align: "center",
  start_alpha: 0,
- mid_alpha: 1,
- end_alpha: 1,
- start_shift_y_percent: 0,
- mid_shift_y_percent: 0,
- end_shift_y_percent: 0
-}
-var blue = {
- filename: "3blue.png",
- width: 1920,
- height: 1080,
- horizontal_align: "center",
- start_alpha: 0.36,
  mid_alpha: 1,
  end_alpha: 1,
  start_shift_y_percent: 0,
