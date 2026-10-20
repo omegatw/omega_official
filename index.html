@@ -77,11 +77,12 @@
       border: 3px solid rgba(255, 255, 255, .1);
       border-top-color: #e5a93c;
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: spin 1.2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .loader-text {
@@ -164,12 +165,14 @@
       const loader = document.getElementById("loader");
       const scrollIndicator = document.getElementById("scroll-indicator");
 
+      // 點擊向下按鈕滑動
       scrollIndicator.addEventListener("click", () => {
         const start = scrollScene.getBoundingClientRect().top + window.scrollY;
         const distance = scene.offsetHeight * 2;
         window.scrollTo({ top: start + distance / 2, behavior: "smooth" });
       });
 
+      // 圖層順序 (z-index 由低至高 1 ~ 8)
       const parameters = [
         milkway,
         blue,
@@ -181,10 +184,12 @@
         omega
       ];
 
+      // 特殊檔案名稱映射
       const filenames = {
-        "2light_clouds.png": "2lighting_cloud.png"
+        "3light_clouds.png": "3lighting_cloud.png"
       };
 
+      // 初始化動態圖層元素
       const layers = parameters.map((parameter, index) => {
         const image = document.createElement("img");
         image.className = "layer";
@@ -197,6 +202,7 @@
         return image;
       });
 
+      // 備用靜態降級圖層 (用於超高螢幕比例)
       const endFallback = document.createElement("img");
       endFallback.className = "end-fallback";
       endFallback.src = "night/end.png";
@@ -205,10 +211,12 @@
       endFallback.draggable = false;
       scene.appendChild(endFallback);
 
+      // 動畫數值插值輔助函式
       const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
       const smoothstep = value => value * value * (3 - 2 * value);
       const interpolate = (from, to, amount) => from + (to - from) * amount;
 
+      // 根據滾動進度計算關鍵幀屬性 (start -> mid -> end)
       function keyframeValue(parameter, property, progress) {
         const firstHalf = progress <= 0.5;
         const from = parameter[`${firstHalf ? "start" : "mid"}_${property}`];
@@ -219,6 +227,7 @@
 
       let scheduled = false;
 
+      // 核心渲染函式
       function render() {
         scheduled = false;
 
@@ -226,7 +235,7 @@
         const viewportHeight = scene.clientHeight;
 
         // 當螢幕長寬比例高於 milkway 的長寬比例 (height / width > 3414 / 1920)，
-        // 導致 milkway 寬度縮放時無法蓋住螢幕高度時：直接強制顯示 end.png，不再採用互動式滾輪動畫。
+        // 導致 milkway 寬度縮放時無法蓋住螢幕高度時：切換為 100vh 靜態降級模式 (顯示 end.png + 置中 omega)
         const isTooTall = (viewportHeight / viewportWidth) > (milkway.height / milkway.width);
 
         if (isTooTall) {
@@ -234,7 +243,7 @@
           scrollScene.style.height = "100vh";
           scrollIndicator.classList.add("hidden");
 
-          // 隱藏 0~6 圖層，顯示第 7 個圖層 (omega) 並在 end.png 上方按 contain 模式水平與垂直居中擺放
+          // 隱藏 0~6 圖層，顯示第 7 個圖層 (omega) 並在 end.png 上方按 Contain 模式居中擺放
           layers.forEach((img, idx) => {
             if (idx === 7) {
               const scale = Math.min(
@@ -283,6 +292,7 @@
         const bmTop = (viewportHeight - bmRenderHeight) / 2;
         const bmBottom = bmTop + bmRenderHeight;
 
+        // 計算各圖層位置與樣式
         parameters.forEach((parameter, index) => {
           const alpha = keyframeValue(parameter, "alpha", progress);
           const shift = keyframeValue(parameter, "shift_y_percent", progress);
@@ -290,7 +300,7 @@
           let renderWidth, renderHeight, left, translateY;
 
           if (parameter === milkway) {
-            // milkway 寬度即為螢幕寬度，保持比例計算高度
+            // milkway 寬度等同螢幕寬度，保持比例計算高度
             renderWidth = viewportWidth;
             renderHeight = viewportWidth * (milkway.height / milkway.width);
             left = 0;
@@ -339,10 +349,12 @@
         requestAnimationFrame(render);
       }
 
+      // 事件監聽與觸發
       window.addEventListener("scroll", scheduleRender, { passive: true });
       window.addEventListener("resize", scheduleRender);
       render();
 
+      // 素材解碼預載，完成後隱藏 Loading 畫面
       Promise.all(
         [...scene.querySelectorAll("img")].map(image => image.decode().catch(() => {}))
       ).then(() => {
