@@ -140,6 +140,172 @@
       40% { transform: rotate(45deg) translate(5px, 5px); }
       60% { transform: rotate(45deg) translate(2px, 2px); }
     }
+
+    .contact-fab {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border: 1px solid rgba(229, 169, 60, .55);
+      border-radius: 999px;
+      background: rgba(4, 17, 42, .82);
+      color: #e5a93c;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: background .3s ease, color .3s ease, opacity .3s ease, visibility .3s ease;
+    }
+
+    .contact-fab:hover { background: #e5a93c; color: #04112a; }
+
+    body.loading .contact-fab { opacity: 0; visibility: hidden; }
+
+    .contact-dialog {
+      width: min(560px, 92vw);
+      padding: 24px 28px;
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 16px;
+      background: #071a35;
+      color: #e8ecf4;
+      font-family: Arial, sans-serif;
+    }
+
+    .contact-dialog::backdrop {
+      background: rgba(2, 8, 20, .72);
+      backdrop-filter: blur(4px);
+    }
+
+    .dialog-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .dialog-kicker { font-size: 11px; letter-spacing: 3px; color: #e5a93c; }
+
+    .dialog-close {
+      border: 0;
+      background: none;
+      color: #aaa;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .dialog-close:hover { color: #fff; }
+
+    .contact-dialog h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .dialog-intro {
+      margin: 0 0 16px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #9fb0c9;
+    }
+
+    .contact-dialog label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #cdd7e6;
+    }
+
+    .contact-dialog label > span { color: #e5a93c; }
+
+    .contact-dialog input,
+    .contact-dialog textarea {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .06);
+      color: #f2f5fa;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .contact-dialog input:focus,
+    .contact-dialog textarea:focus {
+      outline: none;
+      border-color: #e5a93c;
+    }
+
+    .otp-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: -4px 0 12px;
+    }
+
+    .otp-row input {
+      margin-top: 0;
+      flex: 0 0 140px;
+    }
+
+    .otp-btn {
+      padding: 9px 14px;
+      border: 1px solid rgba(229, 169, 60, .55);
+      border-radius: 8px;
+      background: transparent;
+      color: #e5a93c;
+      font-size: 12px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .otp-btn:hover:not(:disabled) { background: rgba(229, 169, 60, .15); }
+    .otp-btn:disabled { opacity: .4; cursor: default; }
+
+    .otp-state { font-size: 12px; color: #9fb0c9; }
+    .otp-state.ok { color: #7fd88f; }
+
+    .form-privacy {
+      margin: 4px 0 12px;
+      font-size: 11px;
+      line-height: 1.7;
+      color: #8296b0;
+    }
+
+    #contact-verification { margin-bottom: 8px; }
+
+    #form-status {
+      min-height: 18px;
+      margin: 10px 0;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #e8cf9a;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 8px;
+      background: #e5a93c;
+      color: #04112a;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+
+    .form-submit:disabled { opacity: .35; cursor: default; }
   </style>
 </head>
 <body class="loading">
@@ -156,6 +322,49 @@
     <span class="text">SCROLL DOWN</span>
     <span class="arrow" aria-hidden="true"></span>
   </button>
+
+  <button class="contact-fab" id="contact-fab" type="button">
+    連絡我們 <span aria-hidden="true">↗</span>
+  </button>
+
+  <dialog class="contact-dialog" id="contact-dialog" aria-labelledby="contact-dialog-title">
+    <div class="dialog-top">
+      <span class="dialog-kicker">CONTACT OMEGA</span>
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="關閉視窗">×</button>
+    </div>
+    <h2 id="contact-dialog-title">聯絡我們</h2>
+    <p class="dialog-intro">填寫資料並完成 Email 與手機驗證後，訊息會寄送給我們，同時寄一份收件通知到您的信箱。</p>
+    <form id="contact-form">
+      <label>您的稱呼 <span aria-hidden="true">*</span>
+        <input name="name" type="text" autocomplete="name" placeholder="怎麼稱呼您？" required maxlength="50">
+      </label>
+      <label>電子郵件 <span aria-hidden="true">*</span>
+        <input name="email" type="email" autocomplete="email" placeholder="name@example.com" required maxlength="100">
+      </label>
+      <div class="otp-row">
+        <input id="email-otp-code" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Email 驗證碼" maxlength="6" aria-label="Email 驗證碼">
+        <button class="otp-btn" id="send-email-otp" type="button">發送驗證碼</button>
+        <button class="otp-btn" id="verify-email-otp" type="button" disabled>驗證</button>
+        <span class="otp-state" id="email-otp-state"></span>
+      </div>
+      <label>聯絡電話（台灣手機）<span aria-hidden="true">*</span>
+        <input name="phone" type="tel" autocomplete="tel" placeholder="0912-345-678" required maxlength="30">
+      </label>
+      <div class="otp-row">
+        <input id="phone-otp-code" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="簡訊驗證碼" maxlength="6" aria-label="簡訊驗證碼">
+        <button class="otp-btn" id="send-phone-otp" type="button">發送驗證碼</button>
+        <button class="otp-btn" id="verify-phone-otp" type="button" disabled>驗證</button>
+        <span class="otp-state" id="phone-otp-state"></span>
+      </div>
+      <label>想告訴我們的事（選填）
+        <textarea name="message" rows="3" placeholder="請簡述您的需求…" maxlength="500"></textarea>
+      </label>
+      <p class="form-privacy">以上資料經 Email 與簡訊驗證後，將透過 Cloudflare 郵件服務寄送給我們，僅用於本次聯絡；請勿填寫敏感資訊。</p>
+      <div id="contact-verification" aria-label="安全驗證"></div>
+      <p id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
+      <button class="form-submit" id="contact-submit" type="submit" disabled>送出訊息</button>
+    </form>
+  </dialog>
 
   <script src="night/night_parameter.js"></script>
   <script>
@@ -361,6 +570,291 @@
         loader.classList.add("hidden");
         document.body.classList.remove("loading");
         scheduleRender();
+      });
+    })();
+  </script>
+  <script>
+    (() => {
+      const WORKER_BASE = "https://client-to-store-mail.kmbt1og.workers.dev";
+      const TURNSTILE_SITEKEY = "0x4AAAAAAFdg9Uj1_ZsI_w97";
+
+      const dialog = document.getElementById("contact-dialog");
+      const form = document.getElementById("contact-form");
+      const status = document.getElementById("form-status");
+      const submit = document.getElementById("contact-submit");
+      const nameInput = form.elements.name;
+      const emailInput = form.elements.email;
+      const phoneInput = form.elements.phone;
+      const messageInput = form.elements.message;
+
+      function normalizeEmail(value) {
+        const target = String(value || "").trim().toLowerCase();
+        return /^[^\s<>@,;|]+@[^\s<>@,;|]+\.[^\s<>@,;|]+$/.test(target) ? target : null;
+      }
+
+      function normalizePhone(value) {
+        const clean = String(value || "").replace(/[\s\-().]/g, "");
+        if (/^09\d{8}$/.test(clean)) return `+886${clean.slice(1)}`;
+        if (/^8869\d{8}$/.test(clean)) return `+${clean}`;
+        if (/^\+8869\d{8}$/.test(clean)) return clean;
+        return null;
+      }
+
+      const channels = {
+        email: {
+          sendBtn: document.getElementById("send-email-otp"),
+          verifyBtn: document.getElementById("verify-email-otp"),
+          codeInput: document.getElementById("email-otp-code"),
+          state: document.getElementById("email-otp-state"),
+          targetInput: emailInput,
+          normalize: normalizeEmail,
+          badTargetMsg: "請輸入有效的 Email",
+          sentMsg: "驗證碼已寄到您的 Email",
+        },
+        sms: {
+          sendBtn: document.getElementById("send-phone-otp"),
+          verifyBtn: document.getElementById("verify-phone-otp"),
+          codeInput: document.getElementById("phone-otp-code"),
+          state: document.getElementById("phone-otp-state"),
+          targetInput: phoneInput,
+          normalize: normalizePhone,
+          badTargetMsg: "請輸入有效台灣手機（09 開頭共 10 碼）",
+          sentMsg: "驗證碼已發送至您的手機",
+        },
+      };
+
+      let verificationToken = "";
+      let widgetId;
+      let verificationLoading = false;
+      let sending = false;
+      let sent = false;
+      const proofs = { email: "", sms: "" };
+      const verifiedTargets = { email: "", sms: "" };
+
+      function updateSubmit() {
+        submit.disabled = sending || sent
+          || !nameInput.value.trim()
+          || !verifiedTargets.email || !verifiedTargets.sms
+          || !verificationToken;
+      }
+
+      function clearVerification() {
+        verificationToken = "";
+        updateSubmit();
+      }
+
+      function resetVerification() {
+        clearVerification();
+        if (widgetId !== undefined && window.turnstile) window.turnstile.reset(widgetId);
+      }
+
+      function loadVerification() {
+        if (widgetId !== undefined || !TURNSTILE_SITEKEY || TURNSTILE_SITEKEY.startsWith("PENDING")) return;
+        if (window.turnstile) {
+          widgetId = window.turnstile.render("#contact-verification", {
+            sitekey: TURNSTILE_SITEKEY,
+            action: "omega_contact",
+            size: "flexible",
+            callback: (token) => {
+              verificationToken = token;
+              updateSubmit();
+            },
+            "expired-callback": resetVerification,
+            "error-callback": () => {
+              if (sent) return;
+              clearVerification();
+              status.textContent = "安全驗證無法載入，請重新開啟視窗。";
+            },
+          });
+          return;
+        }
+        if (verificationLoading) return;
+        verificationLoading = true;
+        const script = document.createElement("script");
+        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+        script.async = true;
+        script.onload = () => {
+          verificationLoading = false;
+          loadVerification();
+        };
+        script.onerror = () => {
+          verificationLoading = false;
+          status.textContent = "安全驗證無法載入，請重新開啟視窗。";
+        };
+        document.head.append(script);
+      }
+
+      function startCountdown(c, seconds) {
+        clearTimeout(c._timer);
+        let left = seconds;
+        const tick = () => {
+          if (left <= 0) {
+            c.sendBtn.textContent = "重新發送";
+            c.sendBtn.disabled = false;
+            return;
+          }
+          c.sendBtn.textContent = `重新發送（${left}）`;
+          left -= 1;
+          c._timer = setTimeout(tick, 1000);
+        };
+        tick();
+      }
+
+      async function postJson(path, payload) {
+        const res = await fetch(`${WORKER_BASE}${path}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(30000),
+        });
+        let result = {};
+        try { result = await res.json(); } catch { /* 保留預設錯誤訊息 */ }
+        return { res, result };
+      }
+
+      async function sendOtp(channel) {
+        const c = channels[channel];
+        const target = c.normalize(c.targetInput.value);
+        if (!target) {
+          c.state.textContent = c.badTargetMsg;
+          c.targetInput.focus();
+          return;
+        }
+        if (!verificationToken) {
+          status.textContent = "安全驗證尚未完成，請稍候再試。";
+          return;
+        }
+        c.sendBtn.disabled = true;
+        c.state.classList.remove("ok");
+        c.state.textContent = "發送中…";
+        try {
+          const { res, result } = await postJson("/otp/send", {
+            site: "omega", channel, target, turnstileToken: verificationToken,
+          });
+          if (!res.ok || result.sent !== true) throw new Error(result.error || "驗證碼發送失敗");
+          c.state.textContent = c.sentMsg;
+          c.verifyBtn.disabled = false;
+          startCountdown(c, result.resendAfter || 60);
+        } catch (error) {
+          c.state.textContent = "";
+          c.sendBtn.disabled = false;
+          status.textContent = error instanceof TypeError || error.name === "TimeoutError"
+            ? "網路連線異常，請稍後再試。" : error.message;
+        } finally {
+          resetVerification();
+        }
+      }
+
+      async function verifyOtp(channel) {
+        const c = channels[channel];
+        const target = c.normalize(c.targetInput.value);
+        const code = c.codeInput.value.trim();
+        if (!target) {
+          c.state.textContent = c.badTargetMsg;
+          return;
+        }
+        if (!/^\d{6}$/.test(code)) {
+          c.state.textContent = "請輸入 6 位數驗證碼";
+          return;
+        }
+        c.verifyBtn.disabled = true;
+        c.state.classList.remove("ok");
+        c.state.textContent = "驗證中…";
+        try {
+          const { res, result } = await postJson("/otp/verify", { site: "omega", channel, target, code });
+          if (!res.ok || result.verified !== true || typeof result.proof !== "string") {
+            throw new Error(result.error || "驗證失敗");
+          }
+          proofs[channel] = result.proof;
+          verifiedTargets[channel] = target;
+          c.state.textContent = "✓ 已驗證";
+          c.state.classList.add("ok");
+          c.codeInput.disabled = true;
+          status.textContent = "";
+        } catch (error) {
+          c.state.textContent = error instanceof TypeError || error.name === "TimeoutError"
+            ? "網路連線異常，請稍後再試。" : error.message;
+          c.verifyBtn.disabled = false;
+        }
+        updateSubmit();
+      }
+
+      Object.entries(channels).forEach(([key, c]) => {
+        c.targetInput.addEventListener("input", () => {
+          proofs[key] = "";
+          verifiedTargets[key] = "";
+          c.state.textContent = "";
+          c.state.classList.remove("ok");
+          c.codeInput.disabled = false;
+          c.codeInput.value = "";
+          c.verifyBtn.disabled = true;
+          updateSubmit();
+        });
+        c.sendBtn.addEventListener("click", () => sendOtp(key));
+        c.verifyBtn.addEventListener("click", () => verifyOtp(key));
+      });
+      nameInput.addEventListener("input", updateSubmit);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (sending || sent || !form.reportValidity()) return;
+        if (!verifiedTargets.email || !verifiedTargets.sms) {
+          status.textContent = "請先完成 Email 與手機驗證。";
+          return;
+        }
+        if (!verificationToken) {
+          status.textContent = "安全驗證尚未完成，請稍候。";
+          return;
+        }
+        const payload = {
+          site: "omega",
+          name: nameInput.value.trim(),
+          email: emailInput.value.trim(),
+          phone: phoneInput.value.trim(),
+          message: messageInput.value.trim(),
+          emailProof: proofs.email,
+          phoneProof: proofs.sms,
+          turnstileToken: verificationToken,
+        };
+        sending = true;
+        updateSubmit();
+        form.setAttribute("aria-busy", "true");
+        status.textContent = "正在送出，請勿重複提交……";
+        try {
+          const { res, result } = await postJson("/contact", payload);
+          if (!res.ok || result.accepted !== true) throw new Error(result.error || "送出失敗，請稍後再試。");
+          sent = true;
+          form.style.display = "none";
+          dialog.querySelector(".dialog-intro").hidden = true;
+          document.getElementById("contact-dialog-title").textContent = "信件已送出";
+          const emailNotice = result.customerEmailSent === true
+            ? "收件通知已寄至您的 Email（寄件者 no-reply@omegaai.cc），若未收到請檢查垃圾郵件匣。"
+            : "您的 Email 通知未能確認寄出，但我們已收到需求。";
+          status.textContent = `需求已寄送給我們，請勿重複提交。${emailNotice}`;
+          form.reset();
+          status.focus();
+        } catch (error) {
+          status.textContent = error instanceof TypeError || error.name === "TimeoutError"
+            ? "無法確認寄送結果，請勿立即重送；請來信 e@otm.tw 確認。"
+            : error.message;
+        } finally {
+          sending = false;
+          form.removeAttribute("aria-busy");
+          if (!sent) resetVerification();
+          updateSubmit();
+        }
+      });
+
+      document.getElementById("contact-fab").addEventListener("click", () => {
+        dialog.showModal();
+        loadVerification();
+        if (!TURNSTILE_SITEKEY || TURNSTILE_SITEKEY.startsWith("PENDING")) {
+          status.textContent = "安全驗證尚未設定完成，暫無法送出。";
+        }
+      });
+      document.getElementById("dialog-close").addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
       });
     })();
   </script>
