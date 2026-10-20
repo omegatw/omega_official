@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#efe6d4">
   <title>Omega</title>
   <style>
     * { box-sizing: border-box; }
@@ -10,44 +11,19 @@
     html, body {
       margin: 0;
       width: 100%;
-      background: #04112a;
+      min-height: 100%;
+      background: #efe6d4;
     }
 
-    .scroll-scene {
-      height: 320vh;
-      height: 320svh;
-    }
-
-    .scene {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      height: 100vh;
-      height: 100svh;
-      overflow: hidden;
-      background: #04112a;
-    }
-
-    .layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      user-select: none;
-      will-change: transform, opacity;
-    }
-
-    .end-fallback {
-      position: absolute;
+    .page-bg {
+      position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center;
-      display: none;
-      z-index: 20;
-      pointer-events: none;
       user-select: none;
+      pointer-events: none;
     }
 
     body.loading { overflow: hidden; }
@@ -60,7 +36,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: #050508;
+      background: #f7f1e6;
       font-family: Arial, sans-serif;
       transition: opacity .8s ease, visibility .8s ease;
     }
@@ -74,8 +50,8 @@
       width: 48px;
       height: 48px;
       margin-bottom: 20px;
-      border: 3px solid rgba(255, 255, 255, .1);
-      border-top-color: #e5a93c;
+      border: 3px solid rgba(34, 102, 221, .15);
+      border-top-color: #2266dd;
       border-radius: 50%;
       animation: spin 1.2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
     }
@@ -86,59 +62,10 @@
     }
 
     .loader-text {
-      color: #aaa;
+      color: #8a8f9c;
       font-size: 14px;
       letter-spacing: 3px;
       text-transform: uppercase;
-    }
-
-    .scroll-indicator {
-      position: fixed;
-      left: 50%;
-      bottom: 30px;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      padding: 12px;
-      border: 0;
-      background: none;
-      color: #ddd;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
-      opacity: .8;
-      transform: translateX(-50%);
-      transition: opacity .3s ease, visibility .3s ease;
-    }
-
-    .scroll-indicator:hover { opacity: 1; }
-
-    .scroll-indicator.hidden,
-    body.loading .scroll-indicator {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .scroll-indicator .text {
-      font-size: 11px;
-      letter-spacing: 3px;
-    }
-
-    .scroll-indicator .arrow {
-      width: 16px;
-      height: 16px;
-      border-right: 2px solid #fff;
-      border-bottom: 2px solid #fff;
-      transform: rotate(45deg);
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translate(0, 0); }
-      40% { transform: rotate(45deg) translate(5px, 5px); }
-      60% { transform: rotate(45deg) translate(2px, 2px); }
     }
 
     .contact-fab {
@@ -150,34 +77,34 @@
       align-items: center;
       gap: 8px;
       padding: 13px 22px;
-      border: 1px solid rgba(229, 169, 60, .55);
+      border: 0;
       border-radius: 999px;
-      background: rgba(4, 17, 42, .82);
-      color: #e5a93c;
+      background: #2266dd;
+      color: #fff;
       font-family: Arial, sans-serif;
       font-size: 14px;
       letter-spacing: 2px;
       cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: background .3s ease, color .3s ease, opacity .3s ease, visibility .3s ease;
+      box-shadow: 0 6px 20px rgba(23, 62, 145, .35);
+      transition: background .3s ease, transform .2s ease, opacity .3s ease, visibility .3s ease;
     }
 
-    .contact-fab:hover { background: #e5a93c; color: #04112a; }
+    .contact-fab:hover { background: #1a52b8; transform: translateY(-2px); }
 
     body.loading .contact-fab { opacity: 0; visibility: hidden; }
 
     .contact-dialog {
       width: min(560px, 92vw);
       padding: 24px 28px;
-      border: 1px solid rgba(255, 255, 255, .15);
+      border: 1px solid #e4dccb;
       border-radius: 16px;
-      background: #071a35;
-      color: #e8ecf4;
+      background: #fffdf9;
+      color: #33394a;
       font-family: Arial, sans-serif;
     }
 
     .contact-dialog::backdrop {
-      background: rgba(2, 8, 20, .72);
+      background: rgba(30, 35, 50, .45);
       backdrop-filter: blur(4px);
     }
 
@@ -188,41 +115,41 @@
       margin-bottom: 12px;
     }
 
-    .dialog-kicker { font-size: 11px; letter-spacing: 3px; color: #e5a93c; }
+    .dialog-kicker { font-size: 11px; letter-spacing: 3px; color: #2266dd; }
 
     .dialog-close {
       border: 0;
       background: none;
-      color: #aaa;
+      color: #9aa0ae;
       font-size: 24px;
       line-height: 1;
       cursor: pointer;
     }
 
-    .dialog-close:hover { color: #fff; }
+    .dialog-close:hover { color: #33394a; }
 
     .contact-dialog h2 {
       margin: 0 0 8px;
       font-size: 24px;
       font-weight: 600;
-      color: #fff;
+      color: #222a3d;
     }
 
     .dialog-intro {
       margin: 0 0 16px;
       font-size: 13px;
       line-height: 1.7;
-      color: #9fb0c9;
+      color: #6b7488;
     }
 
     .contact-dialog label {
       display: block;
       margin-bottom: 12px;
       font-size: 13px;
-      color: #cdd7e6;
+      color: #4a5268;
     }
 
-    .contact-dialog label > span { color: #e5a93c; }
+    .contact-dialog label > span { color: #d9534f; }
 
     .contact-dialog input,
     .contact-dialog textarea {
@@ -230,10 +157,10 @@
       width: 100%;
       margin-top: 6px;
       padding: 10px 12px;
-      border: 1px solid rgba(255, 255, 255, .18);
+      border: 1px solid #ddd6c8;
       border-radius: 8px;
-      background: rgba(255, 255, 255, .06);
-      color: #f2f5fa;
+      background: #faf7f0;
+      color: #222a3d;
       font-family: Arial, sans-serif;
       font-size: 14px;
     }
@@ -241,7 +168,8 @@
     .contact-dialog input:focus,
     .contact-dialog textarea:focus {
       outline: none;
-      border-color: #e5a93c;
+      border-color: #2266dd;
+      background: #fff;
     }
 
     .otp-row {
@@ -258,27 +186,27 @@
 
     .otp-btn {
       padding: 9px 14px;
-      border: 1px solid rgba(229, 169, 60, .55);
+      border: 1px solid #2266dd;
       border-radius: 8px;
       background: transparent;
-      color: #e5a93c;
+      color: #2266dd;
       font-size: 12px;
       letter-spacing: 1px;
       white-space: nowrap;
       cursor: pointer;
     }
 
-    .otp-btn:hover:not(:disabled) { background: rgba(229, 169, 60, .15); }
+    .otp-btn:hover:not(:disabled) { background: rgba(34, 102, 221, .08); }
     .otp-btn:disabled { opacity: .4; cursor: default; }
 
-    .otp-state { font-size: 12px; color: #9fb0c9; }
-    .otp-state.ok { color: #7fd88f; }
+    .otp-state { font-size: 12px; color: #8a8f9c; }
+    .otp-state.ok { color: #2e9e5b; }
 
     .form-privacy {
       margin: 4px 0 12px;
       font-size: 11px;
       line-height: 1.7;
-      color: #8296b0;
+      color: #98a0ad;
     }
 
     #contact-verification { margin-bottom: 8px; }
@@ -288,7 +216,7 @@
       margin: 10px 0;
       font-size: 13px;
       line-height: 1.7;
-      color: #e8cf9a;
+      color: #8a6a1f;
     }
 
     .form-submit {
@@ -296,8 +224,8 @@
       padding: 13px;
       border: 0;
       border-radius: 8px;
-      background: #e5a93c;
-      color: #04112a;
+      background: #2266dd;
+      color: #fff;
       font-family: Arial, sans-serif;
       font-size: 15px;
       font-weight: 600;
@@ -305,23 +233,17 @@
       cursor: pointer;
     }
 
+    .form-submit:hover:not(:disabled) { background: #1a52b8; }
     .form-submit:disabled { opacity: .35; cursor: default; }
   </style>
 </head>
 <body class="loading">
   <div id="loader" role="status" aria-label="Loading Assets">
     <div class="spinner" aria-hidden="true"></div>
-    <div class="loader-text">Loading Assets...</div>
+    <div class="loader-text">Loading...</div>
   </div>
 
-  <main class="scroll-scene" id="scroll-scene">
-    <div class="scene" id="scene" role="img" aria-label="Omega 山景主視覺動畫"></div>
-  </main>
-
-  <button class="scroll-indicator" id="scroll-indicator" type="button">
-    <span class="text">SCROLL DOWN</span>
-    <span class="arrow" aria-hidden="true"></span>
-  </button>
+  <img class="page-bg" src="background.png" alt="" aria-hidden="true" fetchpriority="high">
 
   <button class="contact-fab" id="contact-fab" type="button">
     連絡我們 <span aria-hidden="true">↗</span>
@@ -366,211 +288,22 @@
     </form>
   </dialog>
 
-  <script src="night/night_parameter.js"></script>
   <script>
     (() => {
-      const scene = document.getElementById("scene");
-      const scrollScene = document.getElementById("scroll-scene");
+      const bg = document.querySelector(".page-bg");
       const loader = document.getElementById("loader");
-      const scrollIndicator = document.getElementById("scroll-indicator");
-
-      // 點擊向下按鈕滑動
-      scrollIndicator.addEventListener("click", () => {
-        const start = scrollScene.getBoundingClientRect().top + window.scrollY;
-        const distance = scene.offsetHeight * 2;
-        window.scrollTo({ top: start + distance / 2, behavior: "smooth" });
-      });
-
-      // 圖層順序 (z-index 由低至高 1 ~ 8)
-      const parameters = [
-        milkway,
-        blue,
-        moving_red,
-        light_clouds,
-        sun,
-        black_mountain,
-        red_mountain,
-        omega
-      ];
-
-      // 特殊檔案名稱映射
-      const filenames = {
-        "3light_clouds.png": "3lighting_cloud.png"
-      };
-
-      // 初始化動態圖層元素
-      const layers = parameters.map((parameter, index) => {
-        const image = document.createElement("img");
-        image.className = "layer";
-        image.src = `night/${filenames[parameter.filename] ?? parameter.filename}`;
-        image.alt = "";
-        image.setAttribute("aria-hidden", "true");
-        image.draggable = false;
-        image.style.zIndex = index + 1;
-        scene.appendChild(image);
-        return image;
-      });
-
-      // 備用靜態降級圖層 (用於超高螢幕比例)
-      const endFallback = document.createElement("img");
-      endFallback.className = "end-fallback";
-      endFallback.src = "night/end.png";
-      endFallback.alt = "";
-      endFallback.setAttribute("aria-hidden", "true");
-      endFallback.draggable = false;
-      scene.appendChild(endFallback);
-
-      // 動畫數值插值輔助函式
-      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-      const smoothstep = value => value * value * (3 - 2 * value);
-      const interpolate = (from, to, amount) => from + (to - from) * amount;
-
-      // 根據滾動進度計算關鍵幀屬性 (start -> mid -> end)
-      function keyframeValue(parameter, property, progress) {
-        const firstHalf = progress <= 0.5;
-        const from = parameter[`${firstHalf ? "start" : "mid"}_${property}`];
-        const to = parameter[`${firstHalf ? "mid" : "end"}_${property}`];
-        const amount = smoothstep(firstHalf ? progress * 2 : (progress - 0.5) * 2);
-        return interpolate(from, to, amount);
-      }
-
-      let scheduled = false;
-
-      // 核心渲染函式
-      function render() {
-        scheduled = false;
-
-        const viewportWidth = scene.clientWidth;
-        const viewportHeight = scene.clientHeight;
-
-        // 當螢幕長寬比例高於 milkway 的長寬比例 (height / width > 3414 / 1920)，
-        // 導致 milkway 寬度縮放時無法蓋住螢幕高度時：切換為 100vh 靜態降級模式 (顯示 end.png + 置中 omega)
-        const isTooTall = (viewportHeight / viewportWidth) > (milkway.height / milkway.width);
-
-        if (isTooTall) {
-          endFallback.style.display = "block";
-          scrollScene.style.height = "100vh";
-          scrollIndicator.classList.add("hidden");
-
-          // 隱藏 0~6 圖層，顯示第 7 個圖層 (omega) 並在 end.png 上方按 Contain 模式居中擺放
-          layers.forEach((img, idx) => {
-            if (idx === 7) {
-              const scale = Math.min(
-                viewportWidth / omega.width,
-                viewportHeight / omega.height
-              );
-              const renderWidth = omega.width * scale;
-              const renderHeight = omega.height * scale;
-              const left = (viewportWidth - renderWidth) / 2;
-              const top = (viewportHeight - renderHeight) / 2;
-
-              img.style.width = `${renderWidth}px`;
-              img.style.height = `${renderHeight}px`;
-              img.style.opacity = "1";
-              img.style.transform = `translate3d(${left}px, ${top}px, 0)`;
-              img.style.zIndex = "25";
-              img.style.display = "block";
-            } else {
-              img.style.display = "none";
-            }
-          });
-          return;
-        }
-
-        // 恢復正常互動式滾輪動畫模式
-        endFallback.style.display = "none";
-        scrollScene.style.height = "320vh";
-        layers.forEach((img, idx) => {
-          img.style.display = "block";
-          img.style.zIndex = idx + 1;
-        });
-
-        const distance = scene.offsetHeight * 2;
-        const progress = distance > 0
-          ? clamp(-scrollScene.getBoundingClientRect().top / distance, 0, 1)
-          : 0;
-
-        scrollIndicator.classList.toggle("hidden", progress > 0.03);
-
-        // 計算 black_mountain 上下緣邊界 (作為 milkway 對齊基準)
-        const bmScale = Math.max(
-          viewportWidth / black_mountain.width,
-          viewportHeight / black_mountain.height
-        );
-        const bmRenderHeight = black_mountain.height * bmScale;
-        const bmTop = (viewportHeight - bmRenderHeight) / 2;
-        const bmBottom = bmTop + bmRenderHeight;
-
-        // 計算各圖層位置與樣式
-        parameters.forEach((parameter, index) => {
-          const alpha = keyframeValue(parameter, "alpha", progress);
-          const shift = keyframeValue(parameter, "shift_y_percent", progress);
-
-          let renderWidth, renderHeight, left, translateY;
-
-          if (parameter === milkway) {
-            // milkway 寬度等同螢幕寬度，保持比例計算高度
-            renderWidth = viewportWidth;
-            renderHeight = viewportWidth * (milkway.height / milkway.width);
-            left = 0;
-
-            // start 時下緣與 black_mountain 下緣對齊，mid/end 時上緣與 black_mountain 上緣對齊
-            const mwTopStart = bmBottom - renderHeight;
-            const mwTopMid = bmTop;
-
-            const firstHalf = progress <= 0.5;
-            const amount = smoothstep(firstHalf ? progress * 2 : (progress - 0.5) * 2);
-            translateY = firstHalf
-              ? interpolate(mwTopStart, mwTopMid, amount)
-              : mwTopMid;
-          } else if (parameter === omega) {
-            // omega 強制長寬比例固定不得縮放變形，填滿寬或填滿長，長寬均不被裁切 (contain 模式)，水平與垂直置中
-            const scale = Math.min(
-              viewportWidth / parameter.width,
-              viewportHeight / parameter.height
-            );
-            renderWidth = parameter.width * scale;
-            renderHeight = parameter.height * scale;
-            left = (viewportWidth - renderWidth) / 2;
-            translateY = (viewportHeight - renderHeight) / 2 + shift * viewportHeight;
-          } else {
-            // 計算自適應縮放，保持圖片原長寬比例並 Cover 填滿螢幕
-            const scale = Math.max(
-              viewportWidth / parameter.width,
-              viewportHeight / parameter.height
-            );
-            renderWidth = parameter.width * scale;
-            renderHeight = parameter.height * scale;
-            left = (viewportWidth - renderWidth) / 2;
-            translateY = shift * viewportHeight;
-          }
-
-          layers[index].style.width = `${renderWidth}px`;
-          layers[index].style.height = `${renderHeight}px`;
-          layers[index].style.opacity = alpha;
-          layers[index].style.transform = `translate3d(${left}px, ${translateY}px, 0)`;
-        });
-      }
-
-      function scheduleRender() {
-        if (scheduled) return;
-        scheduled = true;
-        requestAnimationFrame(render);
-      }
-
-      // 事件監聽與觸發
-      window.addEventListener("scroll", scheduleRender, { passive: true });
-      window.addEventListener("resize", scheduleRender);
-      render();
-
-      // 素材解碼預載，完成後隱藏 Loading 畫面
-      Promise.all(
-        [...scene.querySelectorAll("img")].map(image => image.decode().catch(() => {}))
-      ).then(() => {
+      const done = () => {
         loader.classList.add("hidden");
         document.body.classList.remove("loading");
-        scheduleRender();
-      });
+      };
+      if (bg.complete && bg.naturalWidth > 0) {
+        done();
+      } else {
+        bg.decode().then(done).catch(() => {
+          bg.addEventListener("load", done, { once: true });
+          setTimeout(done, 10000);
+        });
+      }
     })();
   </script>
   <script>
